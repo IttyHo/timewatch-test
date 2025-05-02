@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מערכת דיווח נוכחות</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>מערכת דיווח נוכחות</h1>
+        </header>
+        <section class="form-section">
+            <div class="form-container">
+                <label for="date">תאריך:</label>
+                <input type="date" id="date">
+                <label for="time">שעה:</label>
+                <input type="time" id="time">
+                <button class="btn btn-primary" onclick="sendReport('in')">דיווח כניסה</button>
+                <button class="btn btn-secondary" onclick="sendReport('out')">דיווח יציאה</button>
+            </div>
+        </section>
+        <section class="reports-section">
+            <h2>דיווחים אחרונים</h2>
+            <table id="reportTable">
+                <thead>
+                    <tr>
+                        <th>סוג דיווח</th>
+                        <th>תאריך</th>
+                        <th>שעה</th>
+                        <th>נוצר ב</th>
+                        <th>פעולות</th> <!-- עמודת פעולה למחיקה -->
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </section>
+        <section class="hours-section">
+            <div class="form-container">
+                <label for="month">בחר חודש:</label>
+                <input type="month" id="month">
+                <button class="btn btn-primary" onclick="calculateMonthlyHours()">חשב שעות חודשיות</button>
+            </div>
+            <div id="totalHours" class="hours-display"></div>
+        </section>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
