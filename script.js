@@ -3,7 +3,7 @@ function sendReport(type) {
     const time = document.getElementById('time').value;
 
     if (!date || !time) {
-        alert("יש להזין תאריך ושעה");
+        showPopup("יש להזין תאריך ושעה");
         return;
     }
 
@@ -15,15 +15,15 @@ function sendReport(type) {
     .then(res => res.json())
     .then(data => {
         if (data.success) {
-            alert("הדיווח נרשם בהצלחה");
+            showPopup("הדיווח נרשם בהצלחה");
             loadReports(); // טען מחדש את הדיווחים
         } else {
-            alert(data.error || "שגיאה בשליחה");
+            showPopup("שגיאה בשליחה");
         }
     })
     .catch(err => {
         console.error(err);
-        alert("שגיאה בשליחה");
+        showPopup("שגיאה בשליחה");
     });
 }
 
@@ -31,7 +31,7 @@ function calculateMonthlyHours() {
     const month = document.getElementById('month').value;
 
     if (!month) {
-        alert("יש לבחור חודש");
+        showPopup("יש לבחור חודש");
         return;
     }
 
@@ -41,12 +41,12 @@ function calculateMonthlyHours() {
             if (data.total_hours !== undefined) {
                 document.getElementById('totalHours').innerText = `סך שעות עבודה לחודש ${month}: ${data.total_hours} שעות`;
             } else {
-                alert("שגיאה בחישוב שעות העבודה");
+                showPopup("שגיאה בחישוב שעות העבודה");
             }
         })
         .catch(err => {
             console.error(err);
-            alert("שגיאה בחישוב שעות העבודה");
+            showPopup("שגיאה בחישוב שעות העבודה");
         });
 }
 
@@ -78,16 +78,28 @@ function deleteReport(id) {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                alert("הדיווח נמחק בהצלחה");
+                showPopup("הדיווח נמחק בהצלחה");
                 loadReports(); // טען מחדש את הדיווחים
             } else {
-                alert(data.error || "שגיאה במחיקת הדיווח");
+                showPopup("שגיאה במחיקת הדיווח");
             }
         })
         .catch(err => {
             console.error(err);
-            alert("שגיאה במחיקת הדיווח");
+            showPopup("שגיאה במחיקת הדיווח");
         });
+}
+
+function showPopup(message) {
+    const popup = document.getElementById('popup');
+    const popupMessage = document.getElementById('popup-message');
+    popupMessage.textContent = message;
+    popup.classList.remove('hidden');
+}
+
+function closePopup() {
+    const popup = document.getElementById('popup');
+    popup.classList.add('hidden');
 }
 
 // טען את הדיווחים בעת פתיחת העמוד
