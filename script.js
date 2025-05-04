@@ -102,5 +102,4 @@ function closePopup() {
     popup.classList.add('hidden');
 }
 
-// טען את הדיווחים בעת פתיחת העמוד
 window.onload = loadReports;
