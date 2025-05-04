@@ -102,4 +102,18 @@ function closePopup() {
     popup.classList.add('hidden');
 }
 
+function exportToExcel() {
+    // קבלת הטבלה
+    const table = document.getElementById('reportTable');
+    const rows = Array.from(table.rows);
+
+    const data = rows.map(row => Array.from(row.cells).map(cell => cell.innerText));
+
+    const worksheet = XLSX.utils.aoa_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Reports');
+
+    XLSX.writeFile(workbook, 'reports.xlsx');
+}
+
 window.onload = loadReports;

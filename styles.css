@@ -176,3 +176,18 @@ table tr:nth-child(even) {
 .popup-content button {
     margin-top: 10px;
 }
+
+.btn-success {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}

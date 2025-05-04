@@ -34,13 +34,14 @@
                         <th>סוג דיווח</th>
                         <th>תאריך</th>
                         <th>שעה</th>
-                        <th>נוצר ב</th>
-                        <th>פעולות</th> <!-- עמודת פעולה למחיקה -->
+                        <th>נוצר בתאריך</th>
+                        <th>פעולות</th>
                     </tr>
                 </thead>
                 <tbody>
                 </tbody>
             </table>
+            <button class="btn btn-success" onclick="exportToExcel()">ייצוא לאקסל</button>
         </section>
         <section class="hours-section">
             <div class="form-container">
@@ -59,6 +60,7 @@
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
