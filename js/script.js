@@ -7,7 +7,7 @@ function sendReport(type) {
         return;
     }
 
-    fetch('report.php', {
+    fetch('api/index.php?action=add_report', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ report_type: type, report_date: date, report_time: time })
@@ -16,7 +16,9 @@ function sendReport(type) {
     .then(data => {
         if (data.success) {
             showPopup("הדיווח נרשם בהצלחה");
-            loadReports(); // טען מחדש את הדיווחים
+            loadReports();
+        } else if (data.error === 'הדיווח חופף לטווח זמן קיים') {
+            showPopup("הדיווח חופף לטווח זמן קיים");
         } else {
             showPopup("שגיאה בשליחה");
         }
@@ -27,36 +29,12 @@ function sendReport(type) {
     });
 }
 
-function calculateMonthlyHours() {
-    const month = document.getElementById('month').value;
-
-    if (!month) {
-        showPopup("יש לבחור חודש");
-        return;
-    }
-
-    fetch(`calculate_hours.php?month=${month}`)
-        .then(res => res.json())
-        .then(data => {
-            if (data.total_hours !== undefined) {
-                document.getElementById('totalHours').innerText = `סך שעות עבודה לחודש ${month}: ${data.total_hours} שעות`;
-            } else {
-                showPopup("שגיאה בחישוב שעות העבודה");
-            }
-        })
-        .catch(err => {
-            console.error(err);
-            showPopup("שגיאה בחישוב שעות העבודה");
-        });
-}
-
-
 function loadReports() {
-    fetch('fetch_reports.php')
+    fetch('api/index.php?action=fetch_reports')
         .then(res => res.json())
         .then(data => {
             const table = document.getElementById('reportTable').querySelector('tbody');
-            table.innerHTML = ''; // נקה את הטבלה לפני הוספת נתונים חדשים
+            table.innerHTML = '';
             data.forEach(row => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
@@ -74,12 +52,12 @@ function loadReports() {
 function deleteReport(id) {
     if (!confirm("האם אתה בטוח שברצונך למחוק את הדיווח?")) return;
 
-    fetch(`delete_report.php?id=${id}`, { method: 'DELETE' })
+    fetch(`api/index.php?action=delete_report&id=${id}`, { method: 'DELETE' })
         .then(res => res.json())
         .then(data => {
             if (data.success) {
                 showPopup("הדיווח נמחק בהצלחה");
-                loadReports(); // טען מחדש את הדיווחים
+                loadReports();
             } else {
                 showPopup("שגיאה במחיקת הדיווח");
             }
@@ -87,6 +65,29 @@ function deleteReport(id) {
         .catch(err => {
             console.error(err);
             showPopup("שגיאה במחיקת הדיווח");
+        });
+}
+
+function calculateMonthlyHours() {
+    const month = document.getElementById('month').value;
+
+    if (!month) {
+        showPopup("יש לבחור חודש");
+        return;
+    }
+
+    fetch(`api/index.php?action=calculate_hours&month=${month}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.total_hours !== undefined) {
+                document.getElementById('totalHours').innerText = `סך שעות עבודה לחודש ${month}: ${data.total_hours} שעות`;
+            } else {
+                showPopup("שגיאה בחישוב שעות העבודה");
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            showPopup("שגיאה בחישוב שעות העבודה");
         });
 }
 
@@ -103,10 +104,8 @@ function closePopup() {
 }
 
 function exportToExcel() {
-    // קבלת הטבלה
     const table = document.getElementById('reportTable');
     const rows = Array.from(table.rows);
-
     const data = rows.map(row => Array.from(row.cells).map(cell => cell.innerText));
 
     const worksheet = XLSX.utils.aoa_to_sheet(data);
