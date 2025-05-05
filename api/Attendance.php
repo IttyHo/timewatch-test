@@ -12,12 +12,10 @@ class Attendance {
     }
 
     public function addReport($type, $date, $time) {
-        // בדיקה אם הדיווח חופף לטווחי זמן קיימים
         if ($this->isOverlappingReport($date, $time)) {
             return ['error' => 'הדיווח חופף לטווח זמן קיים'];
         }
 
-        // הוספת הדיווח למסד הנתונים
         $stmt = $this->pdo->prepare("INSERT INTO attendance (report_type, report_date, report_time) VALUES (?, ?, ?)");
         $stmt->execute([$type, $date, $time]);
         return ['success' => true];
@@ -75,17 +73,16 @@ class Attendance {
             } elseif ($row['report_type'] === 'out' && $lastIn) {
                 $lastOut = $currentTime;
 
-                // בדיקה אם הזמן החדש נמצא בתוך הטווח
                 $newTime = strtotime($date . ' ' . $time);
                 if ($newTime >= $lastIn && $newTime <= $lastOut) {
-                    return true; // חופף
+                    return true; 
                 }
 
-                $lastIn = null; // איפוס הטווח
+                $lastIn = null; 
             }
         }
 
-        return false; // לא חופף
+        return false; 
     }
 }
 ?>

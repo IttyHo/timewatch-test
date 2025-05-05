@@ -124,7 +124,6 @@ table tr:nth-child(even) {
     height: auto;
 }
 
-/* Popup container */
 .popup {
     position: fixed;
     top: 0;
@@ -138,12 +137,10 @@ table tr:nth-child(even) {
     z-index: 1000;
 }
 
-/* Hidden class to hide the popup */
 .hidden {
     display: none;
 }
 
-/* Popup content */
 .popup-content {
     background-color: #fff;
     padding: 20px;
@@ -155,7 +152,6 @@ table tr:nth-child(even) {
     position: relative;
 }
 
-/* Close button */
 .close-btn {
     position: absolute;
     top: 10px;
