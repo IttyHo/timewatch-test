@@ -106,9 +106,18 @@ function closePopup() {
 function exportToExcel() {
     const table = document.getElementById('reportTable');
     const rows = Array.from(table.rows);
-    const data = rows.map(row => Array.from(row.cells).map(cell => cell.innerText));
 
-    const worksheet = XLSX.utils.aoa_to_sheet(data);
+    const data = rows.map(row => {
+        const cells = Array.from(row.cells);
+        cells.pop(); 
+        return cells.map(cell => cell.innerText);
+    });
+
+    const worksheet = XLSX.utils.aoa_to_sheet([
+        ['סוג דיווח', 'תאריך', 'שעה', 'נוצר בתאריך'],  
+        ...data  
+    ]);
+
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Reports');
 
